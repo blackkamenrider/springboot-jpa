@@ -3,11 +3,23 @@ package com.hosias.evolucao.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "tb_user") // especificando o nome da tabela do banco de dados, porq a palavra que usei na clase user é uma palavra usada no banco de dados h2 e para nao dar conflitos eu fiz a anotaçao
 public class User implements Serializable{
 //Serializable obrigatorio se quer q seus objts trafeguem como bytes em rede e etc e como é serializable precisa de um numero de serie linha a baixo...
+	
 	private static final long serialVersionUID = 1L;
 	
-	
+//preciso informar qual aqui é a chave primaria da tabela do DB 		
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // dizendo que essa chave ID será incrementada pelo DB
 	private Long id;
 	private String name;
 	private String email;
