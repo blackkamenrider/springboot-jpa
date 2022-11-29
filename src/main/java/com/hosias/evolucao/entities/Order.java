@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +23,11 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // dizendo que essa chave ID será incrementada pelo DB
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") // para garantir q meu moment seja mostrado lá no json como formato string do iso 8601
 	private Instant moment; // java oito em diante usa-se o instant ao invez de Date para instanciar uma data de tempo real
 	
-	
+	//@JsonIgnore // se eu colocar deste lado esta anotaçao (o outro lado é o User) quando chamado ela vem vinculado a outra classe , no caso a outra é o muitos e essa é o um. se eu colcoar do lado de lá vem associado essa na outra
 	@ManyToOne 
 	@JoinColumn(name = "client_id") // resolvendo o lado de muitos para um essas anotaçoes vai faze referencia com chave estrangeira no db
 	private User client;
@@ -35,7 +39,7 @@ public class Order implements Serializable {
 	public Order(Long id, Instant date, User client) {
 		super();
 		this.id = id;
-		this.date = date;
+		this.moment = date;
 		this.client = client;
 	}
 
@@ -48,11 +52,11 @@ public class Order implements Serializable {
 	}
 
 	public Instant getDate() {
-		return date;
+		return moment;
 	}
 
 	public void setDate(Instant date) {
-		this.date = date;
+		this.moment = date;
 	}
 
 	public User getClient() {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,7 @@ public class User implements Serializable{
 	private String phone;
 	private String password;
 	
+	@JsonIgnore // no caso de um para muitos e muitos para um causa um problema de loop porq : quando a classe 1 chama a classe 2 e a 2 chama a classe 1  isso causa um loop e esta anotation resolve este erro. esta anotaion precisa ser colocado em um dos lados do muitos para um ou um para muitos
     @OneToMany(mappedBy = "client")	// fazendo referencia na chave estrageira de um para muitos dizendo-> lá do outro lado (muitos para um ) esta mapeado pelo atributo client
 	private List<Order> orders = new ArrayList<>();
 	
