@@ -31,8 +31,10 @@ public class Order implements Serializable {
 	private Integer orderStatus;
 	
 	//@JsonIgnore // se eu colocar deste lado esta anotaçao (o outro lado é o User) quando chamado ela vem vinculado a outra classe , no caso a outra é o muitos e essa é o um. se eu colcoar do lado de lá vem associado essa na outra
-	@ManyToOne 
-	@JoinColumn(name = "client_id") // resolvendo o lado de muitos para um essas anotaçoes vai faze referencia com chave estrangeira no db
+	@ManyToOne // muitos para um 
+	@JoinColumn(name = "client_id") /* resolvendo o lado de muitos para um essas anotaçoes vai fazre referencia com chave estrangeira no db.
+	aqui nesta classe order pedido tem um cliente que é o usuario, daí coloquei uma anotaçao muitos para um (@ManyToOne) e o @JoinColumn(name = "client_id" estou falando que na tabela pedidos lá no banco eu vou ter uma chave estrangeira 
+	chamada client_id que vai conter o id do usuário associado a este pedido(order) */
 	private User client;
 
 	public Order() {

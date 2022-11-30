@@ -56,6 +56,24 @@ public void run(String... args) throws Exception {
 	categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 	productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 	
+	
+//vou dizer aqui de qual categoria pertence um produto. preciso fazer em todos produtos.
+	
+	p1.getCategories().add(cat2); // o produto p1 dentro da coleçao de categoria dele esta lá o objeto cat2. fiz aqui uma associaçao entre objetos
+	p2.getCategories().add(cat1);
+	p2.getCategories().add(cat3); 
+	p3.getCategories().add(cat3);
+	p4.getCategories().add(cat3);
+	p5.getCategories().add(cat2);
+	
+	/* estou trabalhando aqui a cima  no paradigma orientado a objetos, estou acessando objetos relacionados e trabalhando com eles,
+	na hora de salvar no banco temos q salvar no paradígma relacional */
+	
+	productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5)); // para salvar novamente no banco agora com as associaçoes feitas.
+
+// é desta forma q se trabalha com o JPA diferentemente se estivesse trabalhando direto no sql	
+	
+	
 	User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
 	User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456"); 
 // no primeiro argumento coloquei null porq o id será incrementado pelo db

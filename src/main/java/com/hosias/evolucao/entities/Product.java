@@ -9,8 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 
 
@@ -29,8 +31,17 @@ public class Product implements Serializable{
 	private Double price;
 	private String imgUrl;
 	
-	//List<Category> list = new ArrayList<>();  
-	@Transient // impede o jpa de interpretar esse codigo aqui. por enquanto. irei concertar um erro desta linha
+	  
+	/*@Transient // impede o jpa de interpretar esse codigo aqui. por enquanto. Deu na coleçao a baixo um erro porq tenho q fazer um mapeamento pra transformar essas coleçoes que tem nas duas classes product e 
+	category, na tabela de associaçao que tem la no modelo relacional DB */
+	
+	@ManyToMany //muitos para muitos
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categoy_id")  ) /*neste jointable falo qual será o nome da tabela e quais sao as chaves estrangeiras que vao ligar essa tabela (product) com a outra tabela  (Category).
+	estou criando aqui uma tabela de associaçao "tb_product_category" e eu tenho q falar qual será o nome da chave estrangeira referente a tabela de produto(que neste caso é a tabela que estou associando), neste caso dei o nome de "product_id".
+	Na tabela do banco de dados vai ter as chaves estrangeiras das duas tabelas existentes aqui, neste caso aqui é produto e categoria,entao preciso definir isso tbm aqui com o inverseJoinColumn, o inverseJoinColumn é para definir a chave estrangeira da outra entidade
+	como estou do lado do product coloco aqui a chave da categoria (escolhi o nome "categoy_id") e la na categoria coloco a chave (nome da chave) do produto.
+	agora lá do outro lado (category) preciso colocar uma referencia deste mapeamento que acabei de fazer, para isso faço @ManyToMany(mappedBy = "categories"), este categories é a coleçao a baixo declarada nesta classe*/
+	
 	private Set<Category> categories = new HashSet<>(); /*set é uma coleçao que representa um conjunto, vou usar para me garantir que nao terei mais de uma ocorrencia da mesma categoria
 	 instanciei aqui porq preciso q ela inicia vazia e nao nula. instanciada. usei o hasset ao inves do set porq o set é uma interface e nao pode ser instanciado, entao preciso colcoar uma class corrspondente a ele.
 	 estou aqui fazendo a associaçao de muitos para muitos (essa classe coma a classe Category) já aproveiro que a category já esta criada e vou lá e já faço a associaçao tbm   */
@@ -89,6 +100,11 @@ public class Product implements Serializable{
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+	
+
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
 	@Override
