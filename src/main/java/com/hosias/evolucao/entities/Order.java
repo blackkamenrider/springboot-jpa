@@ -2,7 +2,9 @@ package com.hosias.evolucao.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hosias.evolucao.entities.enums.OrderStatus;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,7 +39,11 @@ public class Order implements Serializable {
 	aqui nesta classe order pedido tem um cliente que é o usuario, daí coloquei uma anotaçao muitos para um (@ManyToOne) e o @JoinColumn(name = "client_id" estou falando que na tabela pedidos lá no banco eu vou ter uma chave estrangeira 
 	chamada client_id que vai conter o id do usuário associado a este pedido(order) */
 	private User client;
-
+	
+	//esta linha de codigo eu explico no final dos codigos final da pagina
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>(); // como ele é uma coleçao já instanciei 
+	
 	public Order() {
 		
 	}
@@ -87,6 +94,10 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
 
 	@Override
 	public int hashCode() {
@@ -107,3 +118,10 @@ public class Order implements Serializable {
 	
 	
 }
+
+/* PRECISAMOS FAZER UMA ASSOCIAÇAO ONE-TO-MANY aqui na classe Order, porque na classe order q é o pedido eu tenho uma associaçao com varios items entao, na verdade dentro da minha classe pedido
+ * eu quero ter la uma operaçao getItems para retornar pra mim os orderItems associados  a este pedido.
+ * daí la no meu OrderItem eu tenho um OrderItemPk que é o meu id e este orderItemPk , ele q vai ter uma associaçao de muitos para um com o pedido. Entao quando eu for mapear meu order associado com orderItem 
+ *  eu farei um macete: coloco o @OneToMany() no Private Set<OrderItem> items e no argumeto coloco (mappedBy = "id.order") 
+ * isto porque no OrderItem eu tenho id (id.order) e o id por sua vez que tem o pedido. por isso que coloquei o id.order .
+ * depois de terminado meu pedido agora conhece os itens dele*/

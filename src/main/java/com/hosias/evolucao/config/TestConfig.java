@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.hosias.evolucao.entities.Category;
 import com.hosias.evolucao.entities.Order;
+import com.hosias.evolucao.entities.OrderItem;
 import com.hosias.evolucao.entities.Product;
 import com.hosias.evolucao.entities.User;
 import com.hosias.evolucao.entities.enums.OrderStatus;
 import com.hosias.evolucao.repositories.CategoryRepository;
+import com.hosias.evolucao.repositories.OrderItemRepository;
 import com.hosias.evolucao.repositories.OrderRepository;
 import com.hosias.evolucao.repositories.ProductRepository;
 import com.hosias.evolucao.repositories.UserRepository;
@@ -36,6 +38,9 @@ neste caso vou usar uma injeçao de dependencia	*/
 	
 	@Autowired 
 	private ProductRepository productRepository; // aqui faço a injeçao e mais a baixo coloco os codigos para enviar para o banco
+	
+	@Autowired 
+	private OrderItemRepository orderItemRepository;
 	
 @Override
 public void run(String... args) throws Exception {
@@ -87,6 +92,18 @@ public void run(String... args) throws Exception {
 	
 	userRepository.saveAll(Arrays.asList(u1,u2)); // esta linha de fato faz a execuçao
 	orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+	
+//estopu falando aqui em baixo: OrderItem oi1 ele é um item de pedido que é do pedido o1, p1, quantidade 2, o preço estou reproduzinho o preço do p1 p1.getPrice()	
+	OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+	OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+	OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+	OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+	
+/*pronto agora vou salvar no DB mas, para isso preciso de um repository, irei criar um copiando um existente e colando e fazendo as modificaçoes (agora será OrderItemRepository). depois 
+	preciso injetar esse repository no começo deste codigo, para isso vou colocar @Autowired private OrderItemRepository orderItemRepository; agora posso salvar no banco de dados 
+	estes objetos que criei a cima com o comando orderItemRepository.SaveAll(Arrays.asList(oi1, oi2, oi3, oi4));*/
+	
+	orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	
 }
 }

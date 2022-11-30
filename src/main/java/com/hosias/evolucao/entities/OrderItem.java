@@ -3,6 +3,7 @@ package com.hosias.evolucao.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hosias.evolucao.entities.pk.OrderItemPk;
 
 import jakarta.persistence.EmbeddedId;
@@ -10,7 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_order_item") //mapeamneto
+@Table(name = "tb_order_item")   // mapeamneto
 public class OrderItem implements Serializable{
 	//Serializable obrigatorio se quer q seus objts trafeguem como bytes em rede e etc e como é serializable precisa de um numero de serie linha a baixo...
 	
@@ -21,7 +22,7 @@ public class OrderItem implements Serializable{
 	neste caso irei colocar a notaçao @EmbeddedId*/
 	
 	@EmbeddedId	
-	private OrderItemPk id;
+	private OrderItemPk id = new OrderItemPk(); // sempre que formos criar uma classe auxiliar que é o id composto, tem q instanciar ela aqui... caso contrario dará um erro por que antes de instanciar ela aponta nulo
 	private Integer quantity;
 	private Double price;
 	
@@ -40,6 +41,7 @@ public class OrderItem implements Serializable{
 	
 //preciso fazer os geters e seters do product e order (explicaçao detalhada nas ultimas linhas)	
 	
+	@JsonIgnore // os dois lados se chamando cria-se um loop infinito, desta forma coloquei para um dos lado nao ser chamado e assim quebra o loop
 	public Order getOrder() {
 		return id.getOrder();
 	}
@@ -97,3 +99,6 @@ public class OrderItem implements Serializable{
 /* Preciso fazer os geters e seters do product e do order mesmo que nao tenha eles diretamente nesta classe(eu tenho apenas o id)
   para o mundo exterior o meu item de pedido(OrderItem) nao vai dar pra mim um get id com um campo composto.
   ele vai ter dar um por um, pedido e produto. */
+
+/* PRECISAMOS FAZER UMA ASSOCIAÇAO ONE-TO-MANY na classe Order, porque na classe order q é o pedido eu tenho uma associaçao com varios items entao, na verdade dentro da minha classe pedido
+ * eu quero ter la uma operaçao getItems para retornar pra mim os orderItems associados  a este pedido*/
