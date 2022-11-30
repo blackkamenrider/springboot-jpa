@@ -39,7 +39,7 @@ neste caso vou usar uma injeçao de dependencia	*/
 	
 @Override
 public void run(String... args) throws Exception {
-	// TODO Acodigo escrito aqui será executado quando a aplicaçao for iniciada
+	// TODO codigo escrito aqui será executado quando a aplicaçao for iniciada
 
 //objetos Category do diagrama. observa-se q ela -e independente	
 	Category cat1 = new Category(null, "Electronics");

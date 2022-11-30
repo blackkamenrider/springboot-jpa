@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_product")  //mapeamento relacional do jpa
 public class Product implements Serializable{
-	//Serializable obrigatorio se quer q seus objts trafeguem como bytes em rede e etc e como é serializable precisa de um numero de serie linha a baixo...
+	//Serializable obrigatorio se quer q seus objts trafeguem como bytes em rede e etc, e como é serializable precisa de um numero de serie linha a baixo...
 	
 	private static final long serialVersionUID = 1L;
 		
