@@ -9,6 +9,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hosias.evolucao.entities.enums.OrderStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,6 +45,10 @@ public class Order implements Serializable {
 	//esta linha de codigo eu explico no final dos codigos final da pagina
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>(); // como ele é uma coleçao já instanciei 
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) /*  o nome do atributo do outro lado é order por isso eu coloquei entre aspas "" o nome order. este cascadeType.all foi colocado devido ser um atributo um para um a gente mapea de forma que as duas entidades tenham os mesmos ids
+	se um tiver o codigo 5 o outro tbm terá o codigo 5*/ 
+	private Payment payment; //atributo associado. Já coloco os geters e seters
 	
 	public Order() {
 		
@@ -95,6 +101,16 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 	
+	
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
 	public Set<OrderItem> getItems() {
 		return items;
 	}

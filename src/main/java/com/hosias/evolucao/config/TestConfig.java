@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.hosias.evolucao.entities.Category;
 import com.hosias.evolucao.entities.Order;
 import com.hosias.evolucao.entities.OrderItem;
+import com.hosias.evolucao.entities.Payment;
 import com.hosias.evolucao.entities.Product;
 import com.hosias.evolucao.entities.User;
 import com.hosias.evolucao.entities.enums.OrderStatus;
@@ -105,5 +106,10 @@ public void run(String... args) throws Exception {
 	
 	orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	
+	Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+/*pra salvar um objeto dependente numa relaçao um para um, nao vamos chamar o repository do proprio objt, vamos fazer associaçao de mao dupla em memoria entao, vou chamar meu pedido o1.setPayment(pay1); passando pay1 como argumento*/
+	
+	o1.setPayment(pay1);// eu associei aqui meu pedido um com o pagamento pay1, feito isso vou mandar salvar novamentre o pedido (o1) daí o JPA vai tratar de salvar pra gente o pagamento deste pedido. È assim q funciona no jpa
+	orderRepository.save(o1); //passo novamente o objt o1 e ele salva no banco
 }
 }
