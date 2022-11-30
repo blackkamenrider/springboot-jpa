@@ -51,7 +51,7 @@ public class OrderItem implements Serializable{
 	}
 	
 //product
-	
+	//@JsonIgnore //retirei daqui para ser usado do outro lado.para inverter os resultados
 	public Product getProduct() {
 		return id.getProduct();
 	}

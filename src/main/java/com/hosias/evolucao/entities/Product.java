@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -45,6 +48,11 @@ public class Product implements Serializable{
 	private Set<Category> categories = new HashSet<>(); /*set é uma coleçao que representa um conjunto, vou usar para me garantir que nao terei mais de uma ocorrencia da mesma categoria
 	 instanciei aqui porq preciso q ela inicia vazia e nao nula. instanciada. usei o hasset ao inves do set porq o set é uma interface e nao pode ser instanciado, entao preciso colcoar uma class corrspondente a ele.
 	 estou aqui fazendo a associaçao de muitos para muitos (essa classe coma a classe Category) já aproveiro que a category já esta criada e vou lá e já faço a associaçao tbm   */
+	
+// tipo set trabalha com teoria de conjunto. nao aceita figurinhas repetidas
+//agora para mapear isto no banco farei parecido com a classe order, farei o mapeamento atraves do @OneToMany(mappedBy = "id.order" e ao inves de ser id.order sera id.product)
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	
 	public Product() {
@@ -105,6 +113,16 @@ public class Product implements Serializable{
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+	
+//aqui q esta associado com OrderItem	
+	@JsonIgnore 
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>();
+		for(OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
 	}
 
 	@Override
