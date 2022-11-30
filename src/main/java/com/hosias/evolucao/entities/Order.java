@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hosias.evolucao.entities.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public class Order implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") // para garantir q meu moment seja mostrado lá no json como formato string do iso 8601
 	private Instant moment; // java oito em diante usa-se o instant ao invez de Date para instanciar uma data de tempo real
 	
+	private Integer orderStatus;
+	
 	//@JsonIgnore // se eu colocar deste lado esta anotaçao (o outro lado é o User) quando chamado ela vem vinculado a outra classe , no caso a outra é o muitos e essa é o um. se eu colcoar do lado de lá vem associado essa na outra
 	@ManyToOne 
 	@JoinColumn(name = "client_id") // resolvendo o lado de muitos para um essas anotaçoes vai faze referencia com chave estrangeira no db
@@ -36,10 +39,11 @@ public class Order implements Serializable {
 		
 	}
 
-	public Order(Long id, Instant date, User client) {
+	public Order(Long id, Instant date,OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = date;
+		setOrderStatus(orderStatus); 
 		this.client = client;
 	}
 
@@ -57,6 +61,21 @@ public class Order implements Serializable {
 
 	public void setDate(Instant date) {
 		this.moment = date;
+	}
+
+	
+	
+	public OrderStatus getOrderStatus() {
+	//preciso transformar em Integer em TIPO ENUM	
+		
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+		
 	}
 
 	public User getClient() {
