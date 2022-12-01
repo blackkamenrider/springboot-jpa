@@ -34,5 +34,13 @@ public class UserService {
 		
 		return repository.save(obj); // este save por padrao já retorna o objt salvo entao, neste caso basta eu colocar o return na frente
 	}
+	
+// deleçao do usuário
+	
+	public void delete(Long id) {
+		
+		repository.deleteById(id);
+	// agora preciso ir no userResource e criar o endpoint que fará a exclusao pra deletar o usuario	
+	}
 
 }

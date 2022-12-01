@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,16 @@ public class UserResource {
  *  e se colcarmos para buscar com metodo get veremos o novo inserido */			
 	}
 	
+
+/*aqui a baixo farei o endpoint: para deletar no padrao rest o metodo http q usa é o delete entao a anotation é @DeleteMapping */	
+	@DeleteMapping(value = "/{id}") // precisa passar o id ao qual será deletado
+	public ResponseEntity<Void> delete(@PathVariable Long id){ //void porq a resposta desta requisiçao nao vai me retornar nenhum corpo
+	// pra este long id ser reconhecido	como uma variavel da minha url eu coloco a anotation @PathVariable na frente ou por cima do long id
+		
+		service.delete(id); //deletei agora preciso retornar a resposta 
+		
+		return ResponseEntity.noContent().build(); // como é uma resposta sem corpo, entao uso o .noContent que retorna pra mim uma resposta vazia  e ocodigo http de uma resposta que  nao tem conteúdo,é o 204 e ele já vai tratar isso pra mim tbm.
+	}
 	
 }
 
@@ -72,4 +83,6 @@ public class UserResource {
  *  ResponseEntity<List<User>> findAll(), com a notation @GetMapping, ou seja se eu chamar la no meu postam o caminho /users com o metodo get (getmapping) ele vai me retornar todos os usuarios.
  *  agora se eu inserir uma barra e colocar um numero de um id (@GetMapping("/{id}")) ele vai me retornar um usuario especifico. Esses dois endpoint servem para recuperar dados do banco, neste caso usamos o metodo get do http pra isso , por isso a notation getmapping.
  *  no caso de inserir usamos o metodo post. no caso ao inves deusar @getmapping usaremos PostMapping.
-*/
+ */
+/*sobre o http se eu tentar excluir deletar um id e este id tiver algum pedido relacionado a ele, o metodo delete do http me retornará um erro 500. a logica é : se eu apagar o usuario com pedidos relacionados a ele os pedidos ficariam sem clientes e entao perderia a integridade do meu banco de dados, entao o banco de dados retorna um problema dizendo violaçao de integridade.
+ * quando eu deleto um usuario que nao tenha classe pindurada nele entao, o http me retorna o valor 204 */
