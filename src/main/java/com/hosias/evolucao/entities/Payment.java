@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ public class Payment implements Serializable{
 	
 	private Instant moment; // no caso de pegar um momento exato, hora em tempo real , esta classe veioapos java 8
 
+	@JsonIgnore
 	@OneToOne // um para um 
 	@MapsId // mapearei o outro lado (Order)
 	private Order order;

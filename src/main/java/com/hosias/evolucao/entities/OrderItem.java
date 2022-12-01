@@ -77,6 +77,11 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 
+/* este é um subTotal de OrderItem como esta no diagrama. Porém, aqui na plataforma java Interprise (JAVA EE) oq vale é o get entao, para isso aparecer no meu resultado do json tenho q colocar na frente do nome da funçao (methodo) a palavra get */	
+	public Double getSubTotal() {
+		return price * quantity;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

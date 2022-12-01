@@ -46,7 +46,7 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>(); // como ele é uma coleçao já instanciei 
 	
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) /*  o nome do atributo do outro lado é order por isso eu coloquei entre aspas "" o nome order. este cascadeType.all foi colocado devido ser um atributo um para um a gente mapea de forma que as duas entidades tenham os mesmos ids
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) /*   o nome do atributo do outro lado é order por isso eu coloquei entre aspas "" o nome order. este cascadeType.all foi colocado devido ser um atributo um para um a gente mapea de forma que as duas entidades tenham os mesmos ids
 	se um tiver o codigo 5 o outro tbm terá o codigo 5*/ 
 	private Payment payment; //atributo associado. Já coloco os geters e seters
 	
@@ -114,7 +114,18 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItems() {
 		return items;
 	}
-
+	
+	public Double getTotal() { //aqui na plataforma java Interprise (JAVA EE) oq vale é o get entao, para isso aparecer no meu resultado do json tenho q colocar na frente do nome da funçao (methodo) a palavra get *
+//aqui irei pegar todos os subtotais de todos os itens (OrderItem --> getSubtotal)
+		
+		double sum = 0.0;
+		for(OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		
+		return sum; 
+	}
+		
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
