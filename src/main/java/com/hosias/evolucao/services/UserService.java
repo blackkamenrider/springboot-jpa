@@ -26,5 +26,13 @@ public class UserService {
 		
 		return obj.get();
 	}
+	
+//salvar no DB um usuário
+	
+//(linha a baixo vai tetornar um usuario salvo) insere no DB um novo obj user, depois de feito  agora preciso ir no userResource para fazer um endpoint para inserir
+	public User insert(User obj) {
+		
+		return repository.save(obj); // este save por padrao já retorna o objt salvo entao, neste caso basta eu colocar o return na frente
+	}
 
 }
