@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,6 +76,14 @@ public class UserResource {
 		service.delete(id); //deletei agora preciso retornar a resposta 
 		
 		return ResponseEntity.noContent().build(); // como é uma resposta sem corpo, entao uso o .noContent que retorna pra mim uma resposta vazia  e ocodigo http de uma resposta que  nao tem conteúdo,é o 204 e ele já vai tratar isso pra mim tbm.
+	}
+	
+/* atualizr o usuario no caso do padrao rest pra atualizar um recurso temos q usar o metodo http put entao a anotation ficará @PutMapping e dizer qual id sera atualizado */	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+		obj = service.update(id, obj);
+		
+		return ResponseEntity.ok().body(obj); //ResponseEntity.ok() para indicar q deu td certo, e body(obj) dizendo q o corpo da minha requisiçao será o obj
 	}
 	
 }

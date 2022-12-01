@@ -42,5 +42,27 @@ public class UserService {
 		repository.deleteById(id);
 	// agora preciso ir no userResource e criar o endpoint que fará a exclusao pra deletar o usuario	
 	}
+	
+// updater user
+	public User update(Long id, User obj) {//recebe o id q sera atualizado e o obj com os dados da mudança
+		User entity = repository.getReferenceById(id); /* getReferenceById ele vai instanciar pra mim porem nao vai no bancod e dados ainda, ele só vai deixar pra mim um objeto monitorado pelo jpa para eu trabalhar com ele e em seguida posso efetuar alguma operaçao com o banco de dados.
+		é melhor doq usar o findById, porq o findById necessariamente vai no banco de dados e traz o objeto de la pra gente */
+	
+// entao aqui vou ter q pegar este objeto entity e atualizar com os dados que vieram com obj do parametro pra isso vou criar uma funçao updateData()
+	
+		updateData(entity, obj);
+		return repository.save(entity);	
+		
+	
+	}
+
+private void updateData(User entity, User obj) {
+//aqui irei atualizar os dados do entity com os dados vendo pelo obj
+	entity.setName(obj.getName()); //atualizei o nome do meu entity
+	entity.setEmail(obj.getEmail());
+	entity.setPhone(obj.getPhone());
+//agora preciso ir no meu userRessource e criar o endpoint que fará a atualizaçao	
+	
+	}
 
 }
