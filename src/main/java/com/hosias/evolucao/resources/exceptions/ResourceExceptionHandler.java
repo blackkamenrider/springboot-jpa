@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.hosias.evolucao.services.exception.DatabaseException;
 import com.hosias.evolucao.services.exception.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,4 +31,13 @@ public class ResourceExceptionHandler {
 	
 	}//este ficou sendo nosso tratamento personalizado da exceçao ResourceNotFoundException
 	
+	@ExceptionHandler(DatabaseException.class)	// tratamento especifico que falei no comentario lá na classe UserService que precisa de fazer para a DatabaseException
+	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request){
+		
+		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI()); 
+	
+		return ResponseEntity.status(status).body(err);
+	}
 }
