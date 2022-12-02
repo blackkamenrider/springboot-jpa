@@ -31,7 +31,7 @@ public class ResourceExceptionHandler {
 	
 	}//este ficou sendo nosso tratamento personalizado da exceçao ResourceNotFoundException
 	
-	@ExceptionHandler(DatabaseException.class)	// tratamento especifico que falei no comentario lá na classe UserService que precisa de fazer para a DatabaseException
+	@ExceptionHandler(DatabaseException.class)	// tratamento especifico que falei no comentario lá na classe UserService que precisa de fazer para a DatabaseException. 
 	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request){
 		
 		String error = "Database error";

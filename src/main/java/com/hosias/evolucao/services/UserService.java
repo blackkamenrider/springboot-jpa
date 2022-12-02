@@ -13,6 +13,8 @@ import com.hosias.evolucao.repositories.UserRepository;
 import com.hosias.evolucao.services.exception.DatabaseException;
 import com.hosias.evolucao.services.exception.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 
 @Service
 public class UserService {
@@ -64,14 +66,21 @@ agora pra terminar de tratar manualmente esta excessao, preciso ir no ResourceEx
 	
 // updater user
 	public User update(Long id, User obj) {//recebe o id q sera atualizado e o obj com os dados da mudança
-		User entity = repository.getReferenceById(id); /* getReferenceById ele vai instanciar pra mim porem nao vai no bancod e dados ainda, ele só vai deixar pra mim um objeto monitorado pelo jpa para eu trabalhar com ele e em seguida posso efetuar alguma operaçao com o banco de dados.
-		é melhor doq usar o findById, porq o findById necessariamente vai no banco de dados e traz o objeto de la pra gente */
-	
-// entao aqui vou ter q pegar este objeto entity e atualizar com os dados que vieram com obj do parametro pra isso vou criar uma funçao updateData()
-	
-		updateData(entity, obj);
-		return repository.save(entity);	
 		
+		try {
+			User entity = repository.getReferenceById(id); /* getReferenceById ele vai instanciar pra mim porem nao vai no bancod e dados ainda, ele só vai deixar pra mim um objeto monitorado pelo jpa para eu trabalhar com ele e em seguida posso efetuar alguma operaçao com o banco de dados.
+			é melhor doq usar o findById, porq o findById necessariamente vai no banco de dados e traz o objeto de la pra gente */
+	
+			// entao aqui vou ter q pegar este objeto entity e atualizar com os dados que vieram com obj do parametro pra isso vou criar uma funçao updateData()
+	
+			updateData(entity, obj);
+			return repository.save(entity);	
+		}
+		catch(EntityNotFoundException e/*RuntimeException e*/) {
+			//e.printStackTrace(); // vi que o erro veio de EntityNotFoundException
+			throw new ResourceNotFoundException(id);
+					
+		}
 	
 	}
 
@@ -95,7 +104,10 @@ private void updateData(User entity, User obj) {
  *  entao vou pegar esse nome de excessao e vou trocar lá no catch que tem RuntimeException por ela porq agora vou capturar especificamente essa excessao, e vou lançar a minha ResourceNotFoundException(id) com throw new ResourceNotFoundException(id); Depois de feito isso no postman retornará o erro 404 (no http significa nao encontrado).
  *  
  *  Agora vou tentar deletar um usuario que tem pedido associado a ele e dará um erro 500 (erro nao tratado), para eu ver qual erro o spring esta me retornando farei:
- *  ainda no metodo delete depois de capturar com cath a excessao especifica, eu mandar capturar com outro catch qualquer outra RuntimeException, qualquer outra runtimeexception q ocorrer vou mandar imprimir o resultado desta excessao com o printStackTrace() para eu ver de onde vem exatamente a excessao.*/
+ *  ainda no metodo delete depois de capturar com cath a excessao especifica, eu mandar capturar com outro catch qualquer outra RuntimeException, qualquer outra runtimeexception q ocorrer vou mandar imprimir o resultado desta excessao com o printStackTrace() para eu ver de onde vem exatamente a excessao.
+ *  
+ *  No User update o erro mais comun é quando se dar um put (http)  e manda atualizar um id que nao existe, ele irá retornar um erro 500. Fazemos da mesma forma q fizemos nos outros casos.
+ *  colocamos strackTrace e olhar de onde vem a excessao daí coloca-la em um catch */
 
 
 
