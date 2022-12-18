@@ -3,9 +3,6 @@
 
 # Sobre o projeto
 
-# Esta pagina esta em construçao. Este final de semana 17/12/22 estarei trminando
-
-
 Spring boot Jpa, foi um projeto para praticar os conhecimentos em requisiçoes HTTP Rest com retorno JSON, Controladores Rest, e as divisoes em camadas lógias, organizando o sistema em tres camadas principais, controlador Rest que conversa com a camada de serviço e que por sua vez conversa com uma camada de acesso a camada a dados. 
 
 A aplicação consiste em um cliente que tem um  pedido de um produto com varios itens. Varias classes associadas entre si, um banco de dados relacional.
